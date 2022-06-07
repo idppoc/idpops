@@ -1,9 +1,10 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
+apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: app1
-  namespace: flux-system
+  name: podinfo
+  namespace: app1
 spec:
-  interval: 4h
-  url: https://idppoc.github.com/java_app
+  interval: 10m0s
+  timeout: 60s
+  url: https://stefanprodan.github.io/podinfo
