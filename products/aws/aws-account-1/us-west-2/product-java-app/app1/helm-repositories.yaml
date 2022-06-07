@@ -1,0 +1,9 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: app1
+  namespace: flux-system
+spec:
+  interval: 4h
+  url: https://idppoc.github.com/java_app
