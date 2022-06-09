@@ -1,46 +1,12 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+	"apiserver/handler"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"os"
 )
-
-type Product struct {
-	Product     string `json:"product"`
-	GitLoc      string `json:"gitLoc"`
-	ClusterName string `json:"clusterName"`
-	Cloud       string `json:"cloud"`
-	Account     string `json:"account"`
-	Env         string `json:"env"`
-	Region      string `json:"region"`
-}
-
-var jsonData = `[
-  {
-    "product": "app1",
-    "gitLoc": "https://stefanprodan.github.io/podinfo",
-    "clusterName": "java-app-cluster",
-    "cloud": "aws",
-    "account": "account1",
-    "env": "qa",
-    "region": "us-west-2"
-  },
-  {
-    "product": "app2",
-    "gitLoc": "https://stefanprodan.github.io/podinfo1",
-    "clusterName": "java-app-cluster1",
-    "cloud": "aws",
-    "account": "account2",
-    "env": "qa",
-    "region": "us-west-2"
-  }
-]
-`
 
 func main() {
 	gin.SetMode(gin.DebugMode)
@@ -68,16 +34,15 @@ func main() {
 
 	router.Use(static.Serve("/", localFs))
 
-	products := make([]Product, 0)
-	err := json.Unmarshal([]byte(jsonData), &products)
-	if err != nil {
-		fmt.Println("Error parsing json", err)
+	go handler.SyncGit()
+
+	v1 := router.Group("/idpops/api/v1")
+
+	v1.GET("/version", handler.GetVersionHandler())
+	{
+		v1.GET("/getProducts", handler.GetProductsHandler())
+		v1.GET("/getProductDetails", handler.GetProductDetailsHandler())
 	}
 
-	router.GET("/getProducts", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"products": products,
-		})
-	})
 	router.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

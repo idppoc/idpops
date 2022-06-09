@@ -10,7 +10,9 @@
 
 ## Go Api server
 Rest URL for getting all the products
-      http://localhost:8080/getProducts
+      http://localhost:8080/idpops/api/v1/getProducts
+To the specific product details
+      http://localhost:8080/idpops/api/v1/getProductDetails?cloud=aws&account=aws-account-1&clusterName=product-java-app&region=us-west-2&product=app1
 
 ## docker image for apiserver
     docker.io/madhukirans/idpapiserver:1
