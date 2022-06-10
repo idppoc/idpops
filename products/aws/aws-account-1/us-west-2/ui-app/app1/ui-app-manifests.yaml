@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
         - name: ui-app
-          image: "sanumala123/idpwebapp:v4"
+          image: "sanumala123/idpwebapp:v2"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
