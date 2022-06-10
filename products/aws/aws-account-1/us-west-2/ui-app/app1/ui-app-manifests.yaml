@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/instance: flux-system
+    app.kubernetes.io/part-of: flux
+    app.kubernetes.io/version: v0.30.2
+  name: ui-app
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: idp-ui-app
+  namespace: ui-app
+  labels:
+    app: ui-app
+    chart: ui-app-1.0
+    release: idp
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: idp-ui-app
+  selector:
+    app: ui-app
+    release: idp
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idp-ui-app
+  namespace: ui-app
+  labels:
+    app: ui-app
+    chart: ui-app-1.0
+    release: idp
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui-app
+      release: idp
+  template:
+    metadata:
+      labels:
+        app: ui-app
+        release: idp
+    spec:
+      containers:
+        - name: ui-app
+          image: "sanumala123/idpwebapp:v4"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
