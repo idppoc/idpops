@@ -1,0 +1,28 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: ui-app
+  namespace: ui-app
+spec:
+  interval: 1m0s
+  ref:
+    branch: main
+  secretRef:
+    name: idpops-github-creds
+  timeout: 300s
+  url: https://github.com/idppoc/idpops.git
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: ui-app
+  namespace: ui-app
+spec:
+  interval: 1m0s
+  path: ./products/aws/aws-account-1/us-west-2/ui-app/app1
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: ui-app
+  validation: client
