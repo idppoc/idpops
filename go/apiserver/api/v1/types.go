@@ -9,3 +9,11 @@ type Product struct {
 	Env         string `json:"env"`
 	Region      string `json:"region"`
 }
+
+type GitRepoType struct {
+	APIVersion string `yaml:"apiVersion"`
+	Kind       string `yaml:"kind"`
+	Spec       struct {
+		URL string `yaml:"url"`
+	} `yaml:"spec"`
+}

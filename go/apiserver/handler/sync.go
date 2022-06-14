@@ -3,12 +3,17 @@ package handler
 import (
 	v1 "apiserver/api/v1"
 	"apiserver/utils"
+	"bytes"
 	"fmt"
 	"github.com/go-git/go-git/v5"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v3"
+
+	"io"
 	"io/ioutil"
 	"os"
 	"os/user"
+	"sync"
 	"time"
 )
 
@@ -22,6 +27,8 @@ func SyncGit() {
 		time.Sleep(15 * time.Minute)
 	}
 }
+
+var mutex = sync.Mutex{}
 
 func GetClustersFromGitRepo() error {
 	log := utils.GetLogger().WithField("func", "GetClustersFromGitRepo")
@@ -60,9 +67,12 @@ func GetClustersFromGitRepo() error {
 
 	clouds := getDirs(fmt.Sprintf("%s/products", gitRootFolder), log)
 
+	mutex.Lock()
+	defer mutex.Unlock()
 	//var gitopsMap = make(map[string]types.InputYamlInterface)
-	//products := make([]v1.Product, 0)
-	products = products[:0]
+	products = make([]v1.Product, 0)
+
+	//products = products[:0]
 	for _, c := range clouds {
 		path := fmt.Sprintf("%s/products/%s", gitRootFolder, c)
 		accounts := getDirs(path, log)
@@ -75,14 +85,36 @@ func GetClustersFromGitRepo() error {
 				clusters := getDirs(regionPath, log)
 				for _, cluster := range clusters {
 					clusterPath := fmt.Sprintf("%s/%s", regionPath, cluster)
-
-					//prodPath := fmt.Sprintf("%s/%s", clusterPath, cluster)
 					prodLocs := getDirs(clusterPath, log)
-
 					for _, prod := range prodLocs {
+						if prod == "foundation" {
+							continue
+						}
+
+						data, err := os.ReadFile(clusterPath + "/" + prod + "/flux-sync.yaml")
+						if err != nil {
+							log.Errorf(clusterPath + "/flux-sync.yaml not found")
+							continue
+						}
+						decoder := yaml.NewDecoder(bytes.NewBufferString(string(data)))
+						var d v1.GitRepoType
+						for {
+							if err = decoder.Decode(&d); err != nil {
+								if err == io.EOF {
+									break
+								}
+								log.Errorf("Document decode failed: %w", err)
+							}
+							if d.Kind == "GitRepository" {
+								fmt.Printf("%+v\n", d)
+								break
+							}
+
+						}
+						fmt.Printf("All documents decoded")
 						product := v1.Product{
 							Product:     prod,
-							GitLoc:      "https://github.com/idppoc/idpops.git",
+							GitLoc:      d.Spec.URL,
 							ClusterName: cluster,
 							Cloud:       c,
 							Account:     account,

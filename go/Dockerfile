@@ -11,3 +11,5 @@ FROM alpine:latest
 RUN apk add libc6-compat
 WORKDIR /apiserver
 COPY --from=go_base /go/bin/main ./main
+
+ENTRYPOINT ["./main"]
