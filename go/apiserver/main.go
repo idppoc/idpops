@@ -31,7 +31,6 @@ func main() {
 
 	router.Use(static.Serve("/projects", localFs))
 	router.Use(static.Serve("/home", localFs))
-
 	router.Use(static.Serve("/", localFs))
 
 	go handler.SyncGit()

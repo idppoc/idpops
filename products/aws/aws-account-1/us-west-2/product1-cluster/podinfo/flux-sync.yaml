@@ -2,10 +2,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
 metadata:
-  name: ui-app
-  namespace: ui-app
+  name: podinfo
+  namespace: podinfo
 spec:
-  interval: 1m0s
+  interval: 2m0s
   ref:
     branch: main
   secretRef:
@@ -16,13 +16,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: ui-app
-  namespace: ui-app
+  name: podinfo
+  namespace: podinfo
 spec:
-  interval: 1m0s
-  path: ./products/aws/aws-account-1/us-west-2/ui-app/app1
+  interval: 3m0s
+  path: ./products/aws/aws-account-1/us-west-2/product1-cluster/podinfo
   prune: true
   sourceRef:
     kind: GitRepository
-    name: ui-app
+    name: podinfo
   validation: client

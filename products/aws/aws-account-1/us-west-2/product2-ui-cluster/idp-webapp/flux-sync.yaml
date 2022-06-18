@@ -2,10 +2,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
 metadata:
-  name: app1
-  namespace: app1
+  name: idp-webapp
+  namespace: idp-webapp
 spec:
-  interval: 2m0s
+  interval: 1m0s
   ref:
     branch: main
   secretRef:
@@ -16,13 +16,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: app1
-  namespace: app1
+  name: idp-webapp
+  namespace: idp-webapp
 spec:
-  interval: 3m0s
-  path: ./products/aws/aws-account-1/us-west-2/product-java-app/app1
+  interval: 1m0s
+  path: ./products/aws/aws-account-1/us-west-2/product2-ui-cluster/idp-webapp
   prune: true
   sourceRef:
     kind: GitRepository
-    name: app1
+    name: idp-webapp
   validation: client

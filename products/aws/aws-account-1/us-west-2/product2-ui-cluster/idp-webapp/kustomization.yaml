@@ -4,4 +4,4 @@ resources:
 #- namespace.yaml
 #- github_token_secret.yaml
 - flux-sync.yaml
-- ui-app-manifests.yaml
+- idp-webapp-manifests.yaml

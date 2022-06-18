@@ -5,17 +5,17 @@ metadata:
     app.kubernetes.io/instance: flux-system
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: v0.30.2
-  name: ui-app
+  name: idp-webapp
 ---
 # Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: idp-ui-app
-  namespace: ui-app
+  name: idp-webapp
+  namespace: idp-webapp
   labels:
-    app: ui-app
-    chart: ui-app-1.0
+    app: idp-webapp
+    chart: idp-webapp-1.0
     release: idp
     heritage: Helm
 spec:
@@ -24,36 +24,36 @@ spec:
     - port: 8080
       targetPort: 8080
       protocol: TCP
-      name: idp-ui-app
+      name: idp-webapp
   selector:
-    app: ui-app
+    app: idp-webapp
     release: idp
 ---
 # Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: idp-ui-app
-  namespace: ui-app
+  name: idp-webapp
+  namespace: idp-webapp
   labels:
-    app: ui-app
-    chart: ui-app-1.0
+    app: idp-webapp
+    chart: idp-webapp-1.0
     release: idp
     heritage: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ui-app
+      app: idp-webapp
       release: idp
   template:
     metadata:
       labels:
-        app: ui-app
+        app: idp-webapp
         release: idp
     spec:
       containers:
-        - name: ui-app
+        - name: idp-webapp
           image: "sanumala123/idpwebapp:v5"
           imagePullPolicy: IfNotPresent
           ports:

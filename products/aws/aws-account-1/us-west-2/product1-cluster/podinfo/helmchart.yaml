@@ -1,8 +1,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmChart
 metadata:
-  name: app1-podinfo
-  namespace: app1
+  name: podinfo
+  namespace: podinfo
 spec:
   chart: podinfo
   interval: 1m0s
