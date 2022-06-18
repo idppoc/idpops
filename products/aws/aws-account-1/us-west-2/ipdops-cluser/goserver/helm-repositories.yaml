@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: podinfo
-  namespace: app1
+  name: goserver
+  namespace: goserver
 spec:
   interval: 10m0s
   timeout: 60s
-  url: https://stefanprodan.github.io/podinfo
+  url: https://idppoc.github.io/java_app/

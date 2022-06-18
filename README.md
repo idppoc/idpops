@@ -1,6 +1,7 @@
 # idpops
 
 ## Installing the flux
+ * k apply -f products/flux-crds.yaml
  * cd products/aws/aws-account-1/us-west-2/product-java-app/foundation/flux-system
  * export KUBECONFIG=<>
  * kustomize build . | k apply -f -
