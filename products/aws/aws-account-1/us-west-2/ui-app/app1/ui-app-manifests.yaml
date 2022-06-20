@@ -19,10 +19,11 @@ metadata:
     release: idp
     heritage: Helm
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 8080
       targetPort: 8080
+      nodePort: 30002
       protocol: TCP
       name: idp-ui-app
   selector:
