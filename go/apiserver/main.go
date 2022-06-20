@@ -43,5 +43,5 @@ func main() {
 		v1.GET("/getProductDetails", handler.GetProductDetailsHandler())
 	}
 
-	router.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	router.Run(":30002") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

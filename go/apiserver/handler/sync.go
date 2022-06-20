@@ -49,6 +49,7 @@ func GetClustersFromGitRepo() error {
 			_, err = git.PlainClone(gitRootFolder, false, &git.CloneOptions{
 				URL:      GitRepo,
 				Progress: os.Stdout,
+				//ReferenceName: "madhu-changes",
 				//Auth: &http.BasicAuth{
 				//Username: config.GitConfig.GitUser,
 				//	Password: config.GitConfig.Token,
